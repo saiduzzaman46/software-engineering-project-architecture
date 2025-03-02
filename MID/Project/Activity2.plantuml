@@ -1,0 +1,64 @@
+@startuml
+|User|
+start
+:Login/Register;
+if (Registered?) then (Yes)
+  :Enter login credentials;
+  |System|
+  :Verify credentials;
+  if (Valid credentials?) then (Yes)
+    :Grant access;
+    |User|
+  else (No)
+    :Display error message;
+    stop
+  endif
+else (No)
+  :Provide registration details;
+  |System|
+  :Verify email and create account;
+  :Grant access;
+  |User|
+endif
+:Search routes (From-To);
+|System|
+:Fetch and display routes;
+|User|
+:Select route;
+if (Ticket required?) then (Yes)
+  |User|
+  :Initiate payment;
+  |Payment Gateway|
+  :Process payment securely;
+  :Confirm payment;
+  |System|
+  :Generate ticket (QR code, PDF);
+  |User|
+  :Receive ticket confirmation;
+else (No)
+  :View route details only;
+endif
+
+:Track real-time bus location;
+|System|
+:Fetch GPS data and calculate ETAs;
+|User|
+:View live tracking and updates;
+
+if (Employee involved?) then (Yes)
+  |Employee|
+  :Log in;
+  :Scan passenger ticket;
+  |System|
+  :Validate ticket;
+  :Update seat availability;
+else (No)
+  :Proceed;
+endif
+
+|Bus Owner|
+:View financial reports;
+:Manage buses and employees;
+
+stop
+@enduml

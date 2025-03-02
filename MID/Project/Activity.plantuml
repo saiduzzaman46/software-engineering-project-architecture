@@ -1,0 +1,66 @@
+@startuml
+|User|
+start
+:Registers;
+|System|
+:Verify user registration;
+|User|
+:Login to the system;
+|System|
+:Verify login credentials;
+if (Valid credentials?) then (Yes)
+  :Access system;
+  |User|
+else (No)
+  :Display error message;
+  stop
+endif
+:Search routes (From - To);
+|System|
+:View route options;
+|User|
+:Select bus available in search results;
+:Track bus locations and ETAs;
+:Purchase a ticket;
+|Payment Gateway|
+:Process payment securely;
+:Confirm payment;
+|System|
+:Generate ticket (QR code, PDF);
+|User|
+:Receive ticket confirmation;
+repeat
+  :Track real-time bus location;
+|Bus Management|
+start
+:Registers and logs in;
+|System|
+:Validate registration and credentials;
+|Bus Management|
+:Add buses, routes, and employees;
+|System|
+:Store bus and employee data;
+|Bus Management|
+:View financial data;
+|System|
+:Display financial reports;
+|Employee|
+:Logs into the system;
+|System|
+:Validate employee login;
+|Employee|
+repeat while (valid)
+  :Verifies passenger tickets via QR scanning;
+  |System|
+  :Validate ticket;
+  |Employee|
+  if (valid) then (Yes)
+    :Scan ticket; passenger exits time;
+    |System|
+    :Update seat availability;
+  else (No)
+    stop
+  endif
+end repeat
+stop
+@enduml

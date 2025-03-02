@@ -1,0 +1,113 @@
+@startuml
+actor User
+actor Employee
+actor "Bus Management" as BusMgmt
+participant "System" as System
+participant "Payment Gateway" as PaymentGateway
+participant "Database" as DB
+
+
+User -> System: Log in
+activate System
+System -> DB: Verify credentials
+activate DB
+DB --> System: Credentials valid/invalid
+deactivate DB
+
+alt Valid credentials
+    System --> User: Access granted
+    deactivate System
+else Invalid credentials
+    System --> User: Error message
+    deactivate System
+end
+
+
+BusMgmt -> System: Log in
+activate System
+System -> DB: Verify credentials
+activate DB
+DB --> System: Credentials valid/invalid
+deactivate DB
+
+alt Valid credentials
+    System --> BusMgmt: Access granted
+    deactivate System
+else Invalid credentials
+    System --> BusMgmt: Error message
+    deactivate System
+end
+
+User -> System: Search for route(From-To)
+activate System
+System -> DB: Get route data
+activate DB
+DB --> System: Route data
+deactivate DB
+System --> User: Show route options
+
+User -> System: Select route and book ticket
+activate System
+System -> PaymentGateway: Process payment
+activate PaymentGateway
+PaymentGateway --> System: Payment success/failure
+deactivate PaymentGateway
+
+alt Payment success
+    System --> User: Ticket confirmation
+else Payment failure
+    System --> User: Payment failed message
+    deactivate System
+end
+
+System -> DB: Store ticket details
+activate DB
+DB --> System: Ticket stored
+deactivate DB
+
+
+User -> System: Request bus location and ETA
+activate System
+System -> DB: Get live bus data
+activate DB
+DB --> System: Live bus data
+deactivate DB
+System --> User: Display real-time tracking
+deactivate System
+
+
+Employee -> System: Verify ticket
+activate System
+System -> DB: Check ticket validity
+activate DB
+DB --> System: Ticket valid/invalid
+deactivate DB
+
+alt Ticket valid
+    System --> Employee: Ticket is valid
+else Ticket invalid
+    System --> Employee: Ticket is invalid
+end
+deactivate System
+
+BusMgmt -> System: Add bus, routes, and employees
+activate System
+System -> DB: Store data
+activate DB
+DB --> System: Data stored
+deactivate DB
+System --> BusMgmt: Confirmation
+
+BusMgmt -> System: View financial data
+activate System
+System -> DB: Get financial reports
+activate DB
+DB --> System: Financial data
+deactivate DB
+System --> BusMgmt: Show financial reports
+deactivate System
+
+destroy User
+destroy Employee
+destroy BusMgmt
+@enduml
